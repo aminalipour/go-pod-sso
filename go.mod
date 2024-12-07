@@ -1,4 +1,4 @@
-module git.mohaami.ir/efa/go-pod-sso
+module github.com/aminalipour/go-pod-sso
 
 go 1.22
 
