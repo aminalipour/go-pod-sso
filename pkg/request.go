@@ -7,7 +7,7 @@ import (
 	"net/url"
 	"strings"
 
-	"git.mohaami.ir/efa/go-pod-sso/errors"
+	"github.com/aminalipour/go-pod-sso/errors"
 )
 
 func MakeRequestWithUrlData(url string, method string, urlData url.Values, headers map[string]string, responseBody interface{}) error {

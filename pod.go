@@ -3,10 +3,10 @@ package pod
 import (
 	"fmt"
 
-	"git.mohaami.ir/efa/go-pod-sso/constanse"
-	"git.mohaami.ir/efa/go-pod-sso/errors"
-	"git.mohaami.ir/efa/go-pod-sso/pkg"
-	"git.mohaami.ir/efa/go-pod-sso/types"
+	"github.com/aminalipour/go-pod-sso/constanse"
+	"github.com/aminalipour/go-pod-sso/errors"
+	"github.com/aminalipour/go-pod-sso/pkg"
+	"github.com/aminalipour/go-pod-sso/types"
 	"github.com/go-playground/validator"
 	"github.com/google/uuid"
 )

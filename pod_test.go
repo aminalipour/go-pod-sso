@@ -5,7 +5,7 @@ import (
 	"reflect"
 	"testing"
 
-	"git.mohaami.ir/efa/go-pod-sso/types"
+	"github.com/aminalipour/go-pod-sso/types"
 	"github.com/google/uuid"
 	"github.com/stretchr/testify/mock"
 )

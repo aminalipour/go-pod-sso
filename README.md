@@ -15,14 +15,14 @@ Already a pro? Just edit this README.md and make it your own. Want to make it ea
 
 ```
 cd existing_repo
-git remote add origin https://git.mohaami.ir/efa/go-pod-sso.git
+git remote add origin https://github.com/aminalipour/go-pod-sso.git
 git branch -M main
 git push -uf origin main
 ```
 
 ## Integrate with your tools
 
-- [ ] [Set up project integrations](https://git.mohaami.ir/efa/go-pod-sso/-/settings/integrations)
+- [ ] [Set up project integrations](https://github.com/aminalipour/go-pod-sso/-/settings/integrations)
 
 ## Collaborate with your team
 

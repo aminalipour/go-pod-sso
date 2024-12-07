@@ -6,7 +6,7 @@ import (
 	"reflect"
 	"strconv"
 
-	"git.mohaami.ir/efa/go-pod-sso/types"
+	"github.com/aminalipour/go-pod-sso/types"
 	"github.com/google/uuid"
 )
 
