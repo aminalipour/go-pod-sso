@@ -47,7 +47,7 @@ func MakeRequestWithUrlData(url string, method string, urlData url.Values, heade
 	}
 
 	err = json.Unmarshal(body, responseBody)
-	if err != nil {
+	if err != nil && len(body) != 0 {
 		return errors.NewCustomError(
 			map[string]interface{}{
 				"code":    500,

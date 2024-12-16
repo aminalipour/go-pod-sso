@@ -22,6 +22,7 @@ func init() {
 		ClientSecret:   "",
 		PodAccessToken: "",
 		BaseUrl:        "",
+		PrivateKeyFile: "",
 	}
 }
 
@@ -93,7 +94,7 @@ func TestMakeRequestForOtpVerify(t *testing.T) {
 		PhoneNumber: "",
 	}
 
-	response, err := cfg.MakeRequestForOtpVerify(requestBody, "", "accounts.pod.ir", "")
+	response, err := cfg.MakeRequestForOtpVerify(requestBody, "")
 	if err != nil {
 		t.Fatalf("expected no error, got %v", err)
 	}
@@ -123,7 +124,7 @@ func TestMakeRequestForGetAccessToken(t *testing.T) {
 		Idenify:      "",
 	}
 
-	response, err := cfg.MakeRequestForGetAccessToken(requestBody, "accounts.pod.ir")
+	response, err := cfg.MakeRequestForGetAccessToken(requestBody)
 	if err != nil {
 		t.Fatalf("expected no error, got %v", err)
 	}
@@ -166,4 +167,21 @@ func TestMakeRequestForUserInfo(t *testing.T) {
 	}
 	mockPkg.AssertExpectations(t)
 
+}
+
+func TestMakeRequestForChangeUserInfo(t *testing.T) {
+	mockPkg := new(MockPkg)
+
+	reqBody := types.ChangeUserInfoRequestBody{
+		NationalCode: "",
+		BirthDate:    "",
+	}
+
+	resp, err := cfg.MakeRequestForChangeUserInfo(reqBody, "")
+	if err != nil {
+		t.Fatalf("expected no error, got %v", err)
+	}
+
+	fmt.Println(resp)
+	mockPkg.AssertExpectations(t)
 }

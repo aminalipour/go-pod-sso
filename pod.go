@@ -393,6 +393,52 @@ func (cfg *Config) MakeRequestForUserInfo(accessToken string) (types.UserInfoFro
 
 }
 
+// make request for change (add ) user info
+func (cfg *Config) MakeRequestForChangeUserInfo(requestBody types.ChangeUserInfoRequestBody, accessToken string) (interface{}, error) {
+
+	//validate the requestbody
+	validate := validator.New()
+	if err := validate.Struct(requestBody); err != nil {
+		return types.ChangeUserInfoRequestBody{}, errors.NewCustomError(
+			map[string]interface{}{
+				"code":    400,
+				"message": errors.ErrInvalidInput,
+			},
+		)
+	}
+
+	// generating url data for the token grant
+	urlData, err := pkg.GetUrlDataFromGivenStruct(requestBody)
+	if err != nil {
+		return types.ChangeUserInfoRequestBody{}, errors.NewCustomError(
+			map[string]interface{}{
+				"code":    400,
+				"message": errors.ErrInvalidInput,
+			},
+		)
+	}
+
+	// geting the url for request
+	requestUrl := pkg.GetUrlForChangeUserInfo(cfg.BaseUrl)
+
+	// create the request base info's
+	authorizationHeader := "Bearer " + accessToken
+	headers := map[string]string{
+		"Authorization": authorizationHeader,
+		"Content-Type":  constanse.ContentTypeForUrlDataPod,
+	}
+
+	// make the request
+	var response interface{}
+	err = pkg.MakeRequestWithUrlData(requestUrl, "POST", urlData, headers, &response)
+	if err != nil {
+		return types.ChangeUserInfoRequestBody{}, err
+	}
+
+	return response, nil
+
+}
+
 // request for geting list of user
 // not completed , may contain bug
 func (cfg *Config) MakeRequestForListOfUsersInfo(requestBody types.UserListRequestBody) (interface{}, error) {

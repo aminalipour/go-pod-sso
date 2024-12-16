@@ -139,7 +139,7 @@ type DeviceInfo struct {
 	Ip             string                 `json:"ip"`
 	Language       string                 `json:"language"`
 	LastAccessTime int                    `json:"lastAccessTime"`
-	location       map[string]interface{} `json:"location"`
+	Location       map[string]interface{} `json:"location"`
 	Uid            string                 `json:"uid"`
 }
 
@@ -239,4 +239,9 @@ type UserInfoFromPod struct {
 type UserListRequestBody struct {
 	Identity     []string `json:"identity"`
 	IdentityType []string `json:"identityType"`
+}
+
+type ChangeUserInfoRequestBody struct {
+	NationalCode string `url:"nationalcode"`
+	BirthDate    string `url:"birthdate"`
 }
