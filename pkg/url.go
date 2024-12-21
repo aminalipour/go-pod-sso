@@ -28,6 +28,10 @@ func GetUrlForUserInfo(baseUrl string) string {
 	return baseUrl + "/users"
 }
 
+func GetUrlForChangeUserInfo(baseUrl string) string {
+	return baseUrl + "/users"
+}
+
 func GetUrlForListOfUserInfo(baseUrl string) string {
 	return baseUrl + "/users/info/list"
 }
