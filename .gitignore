@@ -1,3 +1,4 @@
 *.xml
 config.json
 .idea/
+private.xml
