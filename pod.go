@@ -372,7 +372,7 @@ func (cfg *Config) MakeRequestForTokenValidation(requestBody types.AccessTokenPr
 }
 
 // request for getting user info
-func (cfg *Config) MakeRequestForUserInfo(accessToken string) (types.UserInfoFromPod, error) {
+func (cfg *Config) MakeRequestForUserInfo(accessToken string) (types.UserInfoConverted, error) {
 
 	// geting the url for request
 	requestUrl := pkg.GetUrlForUserInfo(cfg.BaseUrl)
@@ -387,9 +387,10 @@ func (cfg *Config) MakeRequestForUserInfo(accessToken string) (types.UserInfoFro
 	var res types.UserInfoFromPod
 	_, err := pkg.MakeRequestWithNoBody(requestUrl, "GET", headers, &res)
 	if err != nil {
-		return types.UserInfoFromPod{}, err
+		return types.UserInfoConverted{}, err
 	}
-	return res, nil
+
+	return pkg.UserInfoFromPodToUserInfoConverted(res), nil
 
 }
 

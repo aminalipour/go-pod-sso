@@ -236,6 +236,27 @@ type UserInfoFromPod struct {
 	UpdatedAtShamsi            string `json:"updated_at_shamsi"`
 }
 
+type UserInfoConverted struct {
+	EmailVerified              bool   `json:"emailVerified"`
+	FamilyName                 string `json:"familyName"`
+	GivenName                  string `json:"givenName"`
+	HasNotinouProfile          bool   `json:"hasNotinouProfile"`
+	HasPassword                bool   `json:"hasPassword"`
+	Id                         int    `json:"id"`
+	LegalNationalCodeVerified  bool   `json:"legalNationalCodeVerified"`
+	NationalcodeSerialVerified bool   `json:"nationalcodeSerialVerified"`
+	NationalcodeVerified       bool   `json:"nationalcodeVerified"`
+	PhoneNumberVerified        bool   `json:"phoneNumberVerified"`
+	PhysicalVerified           bool   `json:"physicalVerified"`
+	PreferredUsername          string `json:"preferredUsername"`
+	RegisterTime               int    `json:"registerTime"`
+	RegisterTimeShamsi         string `json:"registerTimeShamsi"`
+	Sope                       string `json:"scope"`
+	Sub                        string `json:"sub"`
+	UpdatedAt                  int    `json:"updatedAt"`
+	UpdatedAtShamsi            string `json:"updatedAtShamsi"`
+}
+
 type UserListRequestBody struct {
 	Identity     []string `json:"identity"`
 	IdentityType []string `json:"identityType"`
