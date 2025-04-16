@@ -26,8 +26,16 @@ func (cfg *Config) SendHandshakeRequest(requestBody types.HandShakeApiAdditional
 		)
 	}
 
+	var uuidForHandshake uuid.UUID
+
+	if deviceUid != uuid.Nil {
+		uuidForHandshake = deviceUid
+	} else {
+		uuidForHandshake = uuid.Nil
+	}
+
 	// create the url data
-	urlData, err := pkg.GetUrlDataForHandShakeRequest(requestBody, uuid.Nil)
+	urlData, err := pkg.GetUrlDataForHandShakeRequest(requestBody, uuidForHandshake)
 	if err != nil {
 		return types.HandShakeResponse{}, errors.NewCustomError(
 			map[string]interface{}{
@@ -372,7 +380,7 @@ func (cfg *Config) MakeRequestForTokenValidation(requestBody types.AccessTokenPr
 }
 
 // request for getting user info
-func (cfg *Config) MakeRequestForUserInfo(accessToken string) (types.UserInfoFromPod, error) {
+func (cfg *Config) MakeRequestForUserInfo(accessToken string) (types.UserInfoConverted, error) {
 
 	// geting the url for request
 	requestUrl := pkg.GetUrlForUserInfo(cfg.BaseUrl)
@@ -387,9 +395,10 @@ func (cfg *Config) MakeRequestForUserInfo(accessToken string) (types.UserInfoFro
 	var res types.UserInfoFromPod
 	_, err := pkg.MakeRequestWithNoBody(requestUrl, "GET", headers, &res)
 	if err != nil {
-		return types.UserInfoFromPod{}, err
+		return types.UserInfoConverted{}, err
 	}
-	return res, nil
+
+	return pkg.UserInfoFromPodToUserInfoConverted(res), nil
 
 }
 
