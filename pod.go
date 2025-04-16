@@ -26,8 +26,16 @@ func (cfg *Config) SendHandshakeRequest(requestBody types.HandShakeApiAdditional
 		)
 	}
 
+	var uuidForHandshake uuid.UUID
+
+	if deviceUid != uuid.Nil {
+		uuidForHandshake = deviceUid
+	} else {
+		uuidForHandshake = uuid.Nil
+	}
+
 	// create the url data
-	urlData, err := pkg.GetUrlDataForHandShakeRequest(requestBody, uuid.Nil)
+	urlData, err := pkg.GetUrlDataForHandShakeRequest(requestBody, uuidForHandshake)
 	if err != nil {
 		return types.HandShakeResponse{}, errors.NewCustomError(
 			map[string]interface{}{
