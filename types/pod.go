@@ -226,6 +226,7 @@ type UserInfoFromPod struct {
 	NationalcodeSerialVerified bool   `json:"nationalcode_serial_verified"`
 	NationalcodeVerified       bool   `json:"nationalcode_verified"`
 	PhoneNumberVerified        bool   `json:"phone_number_verified"`
+	PhoneNumber                string `json:"phone_number"`
 	PhysicalVerified           bool   `json:"physical_verified"`
 	PreferredUsername          string `json:"preferred_username"`
 	RegisterTime               int    `json:"registerTime"`
