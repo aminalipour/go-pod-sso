@@ -12,6 +12,7 @@ const (
 	ErrTooManyRequests             = "tooManyRequests"
 	ErrServiceUnavailable          = "serviceUnavailable"
 	ErrSignatureKeyOrFileIsMissing = "signatureKeyOrFileIsMissing"
+	ErrInvalidSignature            = "signatureInvalid"
 )
 
 const (
