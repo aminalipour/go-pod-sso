@@ -15,11 +15,9 @@ func MakeRequestWithUrlData(url string, method string, urlData url.Values, heade
 	if err != nil {
 		return errors.NewCustomError(
 			map[string]interface{}{
-				"code": 503,
-				"message": map[string]string{
-					"error":            errors.ErrServiceUnavailable,
-					"errorDescription": "service unavailable",
-				},
+				"code":             503,
+				"error":            errors.ErrServiceUnavailable,
+				"errorDescription": "service unavailable",
 			},
 		)
 	}
@@ -33,11 +31,9 @@ func MakeRequestWithUrlData(url string, method string, urlData url.Values, heade
 	if err != nil {
 		return errors.NewCustomError(
 			map[string]interface{}{
-				"code": 503,
-				"message": map[string]string{
-					"error":            errors.ErrServiceUnavailable,
-					"errorDescription": "service unavailable",
-				},
+				"code":             503,
+				"error":            errors.ErrServiceUnavailable,
+				"errorDescription": "service unavailable",
 			},
 		)
 	}
@@ -46,11 +42,9 @@ func MakeRequestWithUrlData(url string, method string, urlData url.Values, heade
 	if err != nil {
 		return errors.NewCustomError(
 			map[string]interface{}{
-				"code": 500,
-				"message": map[string]string{
-					"error":            errors.ErrInternalServer,
-					"errorDescription": "service error reading response body",
-				},
+				"code":             500,
+				"error":            errors.ErrInternalServer,
+				"errorDescription": "service error reading response body",
 			},
 		)
 	}
@@ -59,21 +53,25 @@ func MakeRequestWithUrlData(url string, method string, urlData url.Values, heade
 	if err != nil && len(body) != 0 {
 		return errors.NewCustomError(
 			map[string]interface{}{
-				"code": 500,
-				"message": map[string]string{
-					"error":            errors.ErrInternalServer,
-					"errorDescription": "service error unmarshal json",
-				},
+				"code":             500,
+				"error":            errors.ErrInternalServer,
+				"errorDescription": "service error unmarshal json",
 			},
 		)
 	}
 	if res.StatusCode != http.StatusOK {
-		return errors.NewCustomError(
-			map[string]interface{}{
-				"code":    res.StatusCode,
-				"message": string(body),
-			},
-		)
+		var bodyMap map[string]interface{}
+		_ = json.Unmarshal(body, &bodyMap)
+
+		errorMap := map[string]interface{}{
+			"code": res.StatusCode,
+		}
+
+		for k, v := range bodyMap {
+			errorMap[k] = v
+		}
+
+		return errors.NewCustomError(errorMap)
 	}
 	return nil
 }
@@ -100,11 +98,9 @@ func MakeRequestWithNoBody(url string, method string, headers map[string]string,
 	if err != nil {
 		return nil, errors.NewCustomError(
 			map[string]interface{}{
-				"code": 503,
-				"message": map[string]string{
-					"error":            errors.ErrServiceUnavailable,
-					"errorDescription": "service unavailable",
-				},
+				"code":             503,
+				"error":            errors.ErrServiceUnavailable,
+				"errorDescription": "service unavailable",
 			},
 		)
 	}
@@ -113,11 +109,9 @@ func MakeRequestWithNoBody(url string, method string, headers map[string]string,
 	if err != nil {
 		return nil, errors.NewCustomError(
 			map[string]interface{}{
-				"code": 500,
-				"message": map[string]string{
-					"error":            errors.ErrInternalServer,
-					"errorDescription": "service error reading response body",
-				},
+				"code":             500,
+				"error":            errors.ErrInternalServer,
+				"errorDescription": "service error reading response body",
 			},
 		)
 	}
@@ -126,21 +120,25 @@ func MakeRequestWithNoBody(url string, method string, headers map[string]string,
 	if err != nil {
 		return nil, errors.NewCustomError(
 			map[string]interface{}{
-				"code": 500,
-				"message": map[string]string{
-					"error":            errors.ErrInternalServer,
-					"errorDescription": "service error unmarshal json",
-				},
+				"code":             500,
+				"error":            errors.ErrInternalServer,
+				"errorDescription": "service error unmarshal json",
 			},
 		)
 	}
 	if res.StatusCode != http.StatusOK {
-		return nil, errors.NewCustomError(
-			map[string]interface{}{
-				"code":    res.StatusCode,
-				"message": string(body),
-			},
-		)
+		var bodyMap map[string]interface{}
+		_ = json.Unmarshal(body, &bodyMap)
+
+		errorMap := map[string]interface{}{
+			"code": res.StatusCode,
+		}
+
+		for k, v := range bodyMap {
+			errorMap[k] = v
+		}
+
+		return nil, errors.NewCustomError(errorMap)
 	}
 	return responseBody, nil
 }
