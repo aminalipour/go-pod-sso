@@ -20,8 +20,8 @@ func (cfg *Config) SendHandshakeRequest(requestBody types.HandShakeApiAdditional
 	if err := validate.Struct(requestBody); err != nil {
 		return types.HandShakeResponse{}, errors.NewCustomError(
 			map[string]interface{}{
-				"code":    400,
-				"message": errors.ErrInvalidInput,
+				"error":            errors.ErrInvalidInput,
+				"errorDescription": "invalid input",
 			},
 		)
 	}
@@ -39,8 +39,8 @@ func (cfg *Config) SendHandshakeRequest(requestBody types.HandShakeApiAdditional
 	if err != nil {
 		return types.HandShakeResponse{}, errors.NewCustomError(
 			map[string]interface{}{
-				"code":    400,
-				"message": errors.ErrInvalidInput,
+				"error":            errors.ErrInvalidInput,
+				"errorDescription": "invalid input",
 			},
 		)
 	}
@@ -79,11 +79,8 @@ func (cfg *Config) SendOtpRequest(requestBody types.OTPRequestToPodRequestBody, 
 	if err := validate.Struct(requestBody); err != nil {
 		return types.OtpResponse{}, "", errors.NewCustomError(
 			map[string]interface{}{
-				"code": 400,
-				"message": map[string]string{
-					"error":            errors.ErrInvalidInput,
-					"errorDescription": "invalid input",
-				},
+				"error":            errors.ErrInvalidInput,
+				"errorDescription": "invalid input",
 			},
 		)
 	}
@@ -93,22 +90,16 @@ func (cfg *Config) SendOtpRequest(requestBody types.OTPRequestToPodRequestBody, 
 	if err != nil {
 		return types.OtpResponse{}, "", errors.NewCustomError(
 			map[string]interface{}{
-				"code": 400,
-				"message": map[string]string{
-					"error":            errors.ErrInvalidInput,
-					"errorDescription": "invalid input",
-				},
+				"error":            errors.ErrInvalidInput,
+				"errorDescription": "invalid input",
 			},
 		)
 	}
 	if cfg.Signature == "" && cfg.PrivateKeyFile == "" {
 		return types.OtpResponse{}, "", errors.NewCustomError(
 			map[string]interface{}{
-				"code": 400,
-				"message": map[string]string{
-					"error":            errors.ErrSignatureKeyOrFileIsMissing,
-					"errorDescription": "signature key or file missing",
-				},
+				"error":            errors.ErrSignatureKeyOrFileIsMissing,
+				"errorDescription": "signature key or file missing",
 			},
 		)
 	}
@@ -117,11 +108,8 @@ func (cfg *Config) SendOtpRequest(requestBody types.OTPRequestToPodRequestBody, 
 	if sigErr != nil {
 		return types.OtpResponse{}, "", errors.NewCustomError(
 			map[string]interface{}{
-				"code": 400,
-				"message": map[string]string{
-					"error":            errors.ErrInvalidSignature,
-					"errorDescription": errors.Signature,
-				},
+				"error":            errors.ErrInvalidSignature,
+				"errorDescription": errors.Signature,
 			},
 		)
 	}
@@ -153,11 +141,8 @@ func (cfg *Config) MakeRequestForOtpVerify(requestBody types.VerifyOtpRequestBod
 	if err := validate.Struct(requestBody); err != nil {
 		return types.OtpVerifyResponse{}, errors.NewCustomError(
 			map[string]interface{}{
-				"code": 400,
-				"message": map[string]string{
-					"error":            errors.ErrInvalidInput,
-					"errorDescription": "invalid input",
-				},
+				"error":            errors.ErrInvalidInput,
+				"errorDescription": "invalid input",
 			},
 		)
 	}
@@ -167,11 +152,8 @@ func (cfg *Config) MakeRequestForOtpVerify(requestBody types.VerifyOtpRequestBod
 	if err != nil {
 		return types.OtpVerifyResponse{}, errors.NewCustomError(
 			map[string]interface{}{
-				"code": 400,
-				"message": map[string]string{
-					"error":            errors.ErrInvalidInput,
-					"errorDescription": "invalid input",
-				},
+				"error":            errors.ErrInvalidInput,
+				"errorDescription": "invalid input",
 			},
 		)
 	}
@@ -180,11 +162,8 @@ func (cfg *Config) MakeRequestForOtpVerify(requestBody types.VerifyOtpRequestBod
 	if sigErr != nil {
 		return types.OtpVerifyResponse{}, errors.NewCustomError(
 			map[string]interface{}{
-				"code": 400,
-				"message": map[string]string{
-					"error":            errors.ErrInvalidSignature,
-					"errorDescription": errors.Signature,
-				},
+				"error":            errors.ErrInvalidSignature,
+				"errorDescription": errors.Signature,
 			},
 		)
 	}
@@ -224,11 +203,8 @@ func (cfg *Config) MakeRequestForGetAccessToken(requestBody types.GetTokenReques
 	if err := validate.Struct(requestBody); err != nil {
 		return types.GetAccessTokenResponse{}, errors.NewCustomError(
 			map[string]interface{}{
-				"code": 400,
-				"message": map[string]string{
-					"error":            errors.ErrInvalidInput,
-					"errorDescription": "invalid input",
-				},
+				"error":            errors.ErrInvalidInput,
+				"errorDescription": "invalid input",
 			},
 		)
 	}
@@ -238,11 +214,8 @@ func (cfg *Config) MakeRequestForGetAccessToken(requestBody types.GetTokenReques
 	if err != nil {
 		return types.GetAccessTokenResponse{}, errors.NewCustomError(
 			map[string]interface{}{
-				"code": 400,
-				"message": map[string]string{
-					"error":            errors.ErrInvalidInput,
-					"errorDescription": "invalid input",
-				},
+				"error":            errors.ErrInvalidInput,
+				"errorDescription": "invalid input",
 			},
 		)
 	}
@@ -278,11 +251,8 @@ func (cfg *Config) MakeRequestForRefreshToken(requestBody types.GetTokenRequestB
 	if err := validate.Struct(requestBody); err != nil {
 		return types.GetAccessTokenResponse{}, errors.NewCustomError(
 			map[string]interface{}{
-				"code": 400,
-				"message": map[string]string{
-					"error":            errors.ErrInvalidInput,
-					"errorDescription": "invalid input",
-				},
+				"error":            errors.ErrInvalidInput,
+				"errorDescription": "invalid input",
 			},
 		)
 	}
@@ -292,11 +262,8 @@ func (cfg *Config) MakeRequestForRefreshToken(requestBody types.GetTokenRequestB
 	if err != nil {
 		return types.GetAccessTokenResponse{}, errors.NewCustomError(
 			map[string]interface{}{
-				"code": 400,
-				"message": map[string]string{
-					"error":            errors.ErrInvalidInput,
-					"errorDescription": "invalid input",
-				},
+				"error":            errors.ErrInvalidInput,
+				"errorDescription": "invalid input",
 			},
 		)
 	}
@@ -344,11 +311,8 @@ func (cfg *Config) MakeRequestForDeactivingToken(requestBody types.DenyPermissio
 	if err := validate.Struct(requestBody); err != nil {
 		return types.AccessTokenProcess{}, errors.NewCustomError(
 			map[string]interface{}{
-				"code": 400,
-				"message": map[string]string{
-					"error":            errors.ErrInvalidInput,
-					"errorDescription": "invalid input",
-				},
+				"error":            errors.ErrInvalidInput,
+				"errorDescription": "invalid input",
 			},
 		)
 	}
@@ -358,11 +322,8 @@ func (cfg *Config) MakeRequestForDeactivingToken(requestBody types.DenyPermissio
 	if err != nil {
 		return types.AccessTokenProcess{}, errors.NewCustomError(
 			map[string]interface{}{
-				"code": 400,
-				"message": map[string]string{
-					"error":            errors.ErrInvalidInput,
-					"errorDescription": "invalid input",
-				},
+				"error":            errors.ErrInvalidInput,
+				"errorDescription": "invalid input",
 			},
 		)
 	}
@@ -392,11 +353,8 @@ func (cfg *Config) MakeRequestForTokenValidation(requestBody types.AccessTokenPr
 	if err := validate.Struct(requestBody); err != nil {
 		return types.ValidationResponseFromPod{}, errors.NewCustomError(
 			map[string]interface{}{
-				"code": 400,
-				"message": map[string]string{
-					"error":            errors.ErrInvalidInput,
-					"errorDescription": "invalid input",
-				},
+				"error":            errors.ErrInvalidInput,
+				"errorDescription": "invalid input",
 			},
 		)
 	}
@@ -452,11 +410,8 @@ func (cfg *Config) MakeRequestForChangeUserInfo(requestBody types.ChangeUserInfo
 	if err := validate.Struct(requestBody); err != nil {
 		return types.ChangeUserInfoRequestBody{}, errors.NewCustomError(
 			map[string]interface{}{
-				"code": 400,
-				"message": map[string]string{
-					"error":            errors.ErrInvalidInput,
-					"errorDescription": "invalid input",
-				},
+				"error":            errors.ErrInvalidInput,
+				"errorDescription": "invalid input",
 			},
 		)
 	}
@@ -466,11 +421,8 @@ func (cfg *Config) MakeRequestForChangeUserInfo(requestBody types.ChangeUserInfo
 	if err != nil {
 		return types.ChangeUserInfoRequestBody{}, errors.NewCustomError(
 			map[string]interface{}{
-				"code": 400,
-				"message": map[string]string{
-					"error":            errors.ErrInvalidInput,
-					"errorDescription": "invalid input",
-				},
+				"error":            errors.ErrInvalidInput,
+				"errorDescription": "invalid input",
 			},
 		)
 	}
@@ -505,11 +457,8 @@ func (cfg *Config) MakeRequestForListOfUsersInfo(requestBody types.UserListReque
 	if err := validate.Struct(requestBody); err != nil {
 		return types.UserListRequestBody{}, errors.NewCustomError(
 			map[string]interface{}{
-				"code": 400,
-				"message": map[string]string{
-					"error":            errors.ErrInvalidInput,
-					"errorDescription": "invalid input",
-				},
+				"error":            errors.ErrInvalidInput,
+				"errorDescription": "invalid input",
 			},
 		)
 	}
@@ -519,11 +468,8 @@ func (cfg *Config) MakeRequestForListOfUsersInfo(requestBody types.UserListReque
 	if err != nil {
 		return types.UserListRequestBody{}, errors.NewCustomError(
 			map[string]interface{}{
-				"code": 400,
-				"message": map[string]string{
-					"error":            errors.ErrInvalidInput,
-					"errorDescription": "invalid input",
-				},
+				"error":            errors.ErrInvalidInput,
+				"errorDescription": "invalid input",
 			},
 		)
 	}
