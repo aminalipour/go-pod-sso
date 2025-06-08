@@ -22,7 +22,7 @@ func init() {
 		ClientSecret:   "",
 		PodAccessToken: "",
 		BaseUrl:        "",
-		PrivateKeyFile: "",
+		Signature:      "",
 	}
 }
 
@@ -178,6 +178,36 @@ func TestMakeRequestForChangeUserInfo(t *testing.T) {
 	}
 
 	resp, err := cfg.MakeRequestForChangeUserInfo(reqBody, "")
+	if err != nil {
+		t.Fatalf("expected no error, got %v", err)
+	}
+
+	fmt.Println(resp)
+	mockPkg.AssertExpectations(t)
+}
+
+func TestSendHandshakeRequestForUserPrivateKey(t *testing.T) {
+	mockPkg := new(MockPkg)
+
+	resp, err := cfg.SendHandshakeRequestForUserPrivateKey("")
+	if err != nil {
+		t.Fatalf("expected no error, got %v", err)
+	}
+
+	fmt.Println(resp)
+	mockPkg.AssertExpectations(t)
+}
+
+func TestMakeRequestForGenerateAutoLoginCode(t *testing.T) {
+	mockPkg := new(MockPkg)
+
+	requestBody := types.AutoLoginCodeGenerateRequestBody{
+		KeyId:       "",
+		AccessToken: "",
+		PrivateKey:  ``,
+	}
+
+	resp, err := cfg.MakeRequestForGenerateAutoLoginCode(requestBody)
 	if err != nil {
 		t.Fatalf("expected no error, got %v", err)
 	}

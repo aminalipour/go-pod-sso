@@ -2,6 +2,9 @@ package pod
 
 import (
 	"fmt"
+	"net/url"
+	"strconv"
+	"time"
 
 	"github.com/aminalipour/go-pod-sso/constanse"
 	"github.com/aminalipour/go-pod-sso/errors"
@@ -493,11 +496,103 @@ func (cfg *Config) MakeRequestForListOfUsersInfo(requestBody types.UserListReque
 	return temp, nil
 }
 
+// handshake request for getting user private key
+// usage in auto login generate code
+func (cfg *Config) SendHandshakeRequestForUserPrivateKey(accessToken string) (types.HandShakeToGetPrivateKeyResponse, error) {
+
+	// geting the url for request
+	requestUrl := pkg.GetUrlForPrivateKeyGenerateHandshake(cfg.BaseUrl)
+
+	// create request header
+	authorizationHeader := "Bearer " + accessToken
+	headers := map[string]string{
+		"Content-Type":  constanse.ContentTypeForUrlDataPod,
+		"Authorization": authorizationHeader,
+	}
+
+	urlData := url.Values{"keyAlgorithm": []string{"RSA"}}
+
+	var response types.HandShakeToGetPrivateKeyResponse
+	err := pkg.MakeRequestWithUrlData(requestUrl, "POST", urlData, headers, &response)
+	if err != nil {
+		return types.HandShakeToGetPrivateKeyResponse{}, err
+	}
+	return response, nil
+}
+
+// request for generating auto login code
+func (cfg *Config) MakeRequestForGenerateAutoLoginCode(requestBody types.AutoLoginCodeGenerateRequestBody) (types.AutoLoginCodeGenerateResponse, error) {
+	// validate the body with certain validation set to the struct
+	validate := validator.New()
+	if err := validate.Struct(requestBody); err != nil {
+		return types.AutoLoginCodeGenerateResponse{}, errors.NewCustomError(
+			map[string]interface{}{
+				"error":            errors.ErrInvalidInput,
+				"errorDescription": "invalid input",
+			},
+		)
+	}
+
+	timeStamp := time.Now().UnixMilli()
+
+	////// generate signature
+	// first we should create the payload
+	payLoad := fmt.Sprintf("access_token: %s\nkey_id: %s\ntimestamp: %d", requestBody.AccessToken, requestBody.KeyId, timeStamp)
+
+	// sign private key of user using this payload
+	signature, err := pkg.GetSignatureFromString(requestBody.PrivateKey, payLoad)
+	if err != nil {
+		return types.AutoLoginCodeGenerateResponse{}, errors.NewCustomError(
+			map[string]interface{}{
+				"error":            errors.ErrInvalidSignature,
+				"errorDescription": errors.Signature,
+			},
+		)
+	}
+
+	requestBodyToPod := types.AutoLoginCodeGenerateRequestBodyToPod{
+		KeyId:       requestBody.KeyId,
+		Timestamp:   strconv.FormatInt(timeStamp, 10),
+		Signature:   signature,
+		AccessToken: requestBody.AccessToken,
+	}
+
+	// generating url data for the request to pod
+	urlData, err := pkg.GetUrlDataFromGivenStruct(requestBodyToPod)
+	if err != nil {
+		return types.AutoLoginCodeGenerateResponse{}, errors.NewCustomError(
+			map[string]interface{}{
+				"error":            errors.ErrInvalidInput,
+				"errorDescription": "invalid input",
+			},
+		)
+	}
+
+	// create request header
+	authorizationHeader := "Bearer " + cfg.PodAccessToken
+	headers := map[string]string{
+		"Content-Type":  constanse.ContentTypeForUrlDataPod,
+		"Authorization": authorizationHeader,
+	}
+
+	// geting the url for request
+	requestUrl := pkg.GetUrlRequestForGeneratingAutoLoginCode(cfg.BaseUrl)
+
+	// make request
+	var response types.AutoLoginCodeGenerateResponse
+	err = pkg.MakeRequestWithUrlData(requestUrl, "POST", urlData, headers, &response)
+	if err != nil {
+		return types.AutoLoginCodeGenerateResponse{}, err
+	}
+	return response, nil
+
+}
+
 func (cfg *Config) GetSignature() (string, error) {
 	var signature = cfg.Signature
 	if cfg.PrivateKeyFile != "" {
 		// get signature from given path
-		signatureFromFile, err := pkg.Getsignature(cfg.PrivateKeyFile, "host: "+pkg.GetHostFromURL(cfg.BaseUrl))
+		signatureFromFile, err := pkg.GetSignatureFromFile(cfg.PrivateKeyFile, "host: "+pkg.GetHostFromURL(cfg.BaseUrl))
 		if err != nil {
 			return "", err
 		}

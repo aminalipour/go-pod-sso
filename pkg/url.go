@@ -35,3 +35,11 @@ func GetUrlForChangeUserInfo(baseUrl string) string {
 func GetUrlForListOfUserInfo(baseUrl string) string {
 	return baseUrl + "/users/info/list"
 }
+
+func GetUrlForPrivateKeyGenerateHandshake(baseUrl string) string {
+	return baseUrl + "/handshake/users"
+}
+
+func GetUrlRequestForGeneratingAutoLoginCode(baseUrl string) string {
+	return baseUrl + "/oauth2/submit/autoLogin"
+}

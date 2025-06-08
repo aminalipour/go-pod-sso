@@ -267,3 +267,29 @@ type ChangeUserInfoRequestBody struct {
 	NationalCode string `url:"nationalcode"`
 	BirthDate    string `url:"birthdate"`
 }
+
+type HandShakeToGetPrivateKeyResponse struct {
+	KeyId      string `json:"keyId"`
+	PrivateKey string `json:"privateKey"`
+}
+
+type AutoLoginCodeGenerateRequestBody struct {
+	KeyId       string `json:"keyId"`
+	AccessToken string `json:"accessToken"`
+	PrivateKey  string `json:"privateKey"`
+}
+
+type AutoLoginCodeGenerateRequestBodyToPod struct {
+	KeyId       string `json:"key_id"`
+	Timestamp   string `json:"timestamp"`
+	Signature   string `json:"signature"`
+	AccessToken string `json:"access_token"`
+}
+
+type AutoLoginCodeGenerateResponse struct {
+	AccessToken   string `json:"access_token"`
+	AutoLoginCode string `json:"auto_login_code"`
+	KeyId         string `json:"key_id"`
+	Signature     string `json:"signature"`
+	TimeStamp     string `json:"timestamp"`
+}

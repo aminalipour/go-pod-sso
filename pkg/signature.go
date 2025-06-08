@@ -23,7 +23,24 @@ type RSAKey struct {
 	InverseQ string `xml:"InverseQ"`
 }
 
-func Getsignature(privateKeyPath string, payLoad string) (string, error) {
+func GetSignatureFromString(privateKey string, payLoad string) (string, error) {
+	// convert payload to byte
+	payloadByte := []byte(payLoad)
+
+	private_key, err := load_private_key_from_xml([]byte(privateKey))
+	if err != nil {
+		return "", err
+	}
+
+	// sing the private key with payload
+	signature, err := sign_payload(private_key, payloadByte)
+	if err != nil {
+		return "", err
+	}
+	return signature, nil
+}
+
+func GetSignatureFromFile(privateKeyPath string, payLoad string) (string, error) {
 	// convert payload to byte
 	payloadByte := []byte(payLoad)
 	// read the xml from file
