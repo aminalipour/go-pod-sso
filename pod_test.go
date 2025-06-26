@@ -63,6 +63,7 @@ func TestSendOtpRequest(t *testing.T) {
 		ReferrerType:     "username",
 		LinkDeliveryType: "SMS",
 		NationalCode:     "",
+		Scope:            "",
 	}
 	response, signature, err := cfg.SendOtpRequest(requestBody, "", "")
 	fmt.Println("signiture : ", signature)
@@ -213,5 +214,29 @@ func TestMakeRequestForGenerateAutoLoginCode(t *testing.T) {
 	}
 
 	fmt.Println(resp)
+	mockPkg.AssertExpectations(t)
+}
+
+func TestMakeRequestForListOfUsersInfo(t *testing.T) {
+	mockPkg := new(MockPkg)
+
+	requestBody := types.UserListRequestBody{}
+	response, err := cfg.MakeRequestForListOfUsersInfo(requestBody)
+	if err != nil {
+		t.Fatalf("expected no error, got %v", err)
+	}
+
+	val := reflect.ValueOf(response)
+	typ := reflect.TypeOf(response)
+
+	for i := 0; i < val.NumField(); i++ {
+		field := typ.Field(i)
+		value := val.Field(i).Interface()
+		fmt.Printf("%s: %v\n", field.Name, value)
+	}
+
+	if reflect.DeepEqual(response, types.UserInfoFromPod{}) {
+		t.Fatalf("expected valid response, got %v", response)
+	}
 	mockPkg.AssertExpectations(t)
 }

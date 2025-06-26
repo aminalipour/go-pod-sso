@@ -396,7 +396,7 @@ func (cfg *Config) MakeRequestForUserInfo(accessToken string) (types.UserInfoFro
 
 	// make the request
 	var res types.UserInfoFromPod
-	_, err := pkg.MakeRequestWithNoBody(requestUrl, "GET", headers, &res)
+	err := pkg.MakeRequestWithNoBody(requestUrl, "GET", headers, &res)
 	if err != nil {
 		return types.UserInfoFromPod{}, err
 	}
@@ -451,8 +451,7 @@ func (cfg *Config) MakeRequestForChangeUserInfo(requestBody types.ChangeUserInfo
 
 }
 
-// request for geting list of user
-// not completed , may contain bug
+// request for geting list of user info
 func (cfg *Config) MakeRequestForListOfUsersInfo(requestBody types.UserListRequestBody) (interface{}, error) {
 
 	// validate the body with certain validation set to the struct
@@ -467,8 +466,7 @@ func (cfg *Config) MakeRequestForListOfUsersInfo(requestBody types.UserListReque
 	}
 
 	// generating url data for the request to pod
-	urlDataForValidationOfToken, err := pkg.GetUrlDataFromGivenStruct(requestBody)
-	if err != nil {
+	if len(requestBody.Identity) == 0 || len(requestBody.IdentityType) == 0 || len(requestBody.Identity) != len(requestBody.IdentityType) {
 		return types.UserListRequestBody{}, errors.NewCustomError(
 			map[string]interface{}{
 				"error":            errors.ErrInvalidInput,
@@ -487,13 +485,20 @@ func (cfg *Config) MakeRequestForListOfUsersInfo(requestBody types.UserListReque
 		"Authorization": authorizationHeader,
 	}
 
+	for i := 0; i < len(requestBody.Identity); i++ {
+		if i == 0 {
+			requestUrl += "?"
+		}
+		requestUrl += "identityType=" + requestBody.IdentityType[i] + "&" + "identity=" + requestBody.Identity[i]
+	}
+
 	// make the request
-	var temp interface{}
-	err = pkg.MakeRequestWithUrlData(requestUrl, "GET", urlDataForValidationOfToken, headers, &temp)
+	var response types.ListOfUsersInfo
+	err := pkg.MakeRequestWithNoBody(requestUrl, "GET", headers, &response)
 	if err != nil {
 		return types.ValidationResponseFromPod{}, err
 	}
-	return temp, nil
+	return response, nil
 }
 
 // handshake request for getting user private key

@@ -237,6 +237,57 @@ type UserInfoFromPod struct {
 	UpdatedAtShamsi            string `json:"updated_at_shamsi"`
 }
 
+type ListOfUsersInfo struct {
+	Users []ListOfUsersInfoItem `json:"users"`
+}
+
+type ListOfUsersInfoItem struct {
+	EmailVerified               bool           `json:"email_verified"`
+	FamilyName                  string         `json:"family_name"`
+	ForeignCodeVerified         bool           `json:"foreigncode_verified"`
+	GivenName                   string         `json:"given_name"`
+	HasNotinouProfile           bool           `json:"hasNotinouProfile"`
+	HasPassword                 bool           `json:"hasPassword"`
+	ID                          int64          `json:"id"`
+	LegalInquireStatus          []LegalInquire `json:"legalInquireStatus"`
+	LegalNationalCodeVerified   bool           `json:"legalNationalCode_verified"`
+	NationalCode                string         `json:"nationalcode"`
+	NationalCodeSerial          string         `json:"nationalcode_serial"`
+	NationalCodeSerialVerified  bool           `json:"nationalcode_serial_verified"`
+	NationalCodeSerialVerifiers []int64        `json:"nationalcode_serial_verifiers"`
+	NationalCodeVerified        bool           `json:"nationalcode_verified"`
+	NationalCodeVerifiers       []int64        `json:"nationalcode_verifiers"`
+	PhoneNumber                 string         `json:"phone_number"`
+	PhoneNumberVerified         bool           `json:"phone_number_verified"`
+	PhoneNumberVerifiers        []int64        `json:"phone_number_verifiers"`
+	PhysicalVerified            bool           `json:"physical_verified"`
+	PreferredUsername           string         `json:"preferred_username"`
+	RegisterTime                int64          `json:"registerTime"`
+	RegisterTimeShamsi          string         `json:"registerTimeShamsi"`
+	Scope                       string         `json:"scope"`
+	Sub                         string         `json:"sub"`
+	UpdatedAt                   int64          `json:"updated_at"`
+	UpdatedAtShamsi             string         `json:"updated_at_shamsi"`
+}
+
+type LegalInquire struct {
+	AnswerFromCoreTime   string       `json:"answerFromCoreTime"`
+	CallerClient         CallerClient `json:"callerClient"`
+	InquiryTime          int64        `json:"inquiryTime"`
+	InquiryTimeShamsi    string       `json:"inquiryTimeShamsi"`
+	InquiryType          string       `json:"inquiryType"`
+	InsertTime           int64        `json:"insertTime"`
+	InsertTimeShamsi     string       `json:"insertTimeShamsi"`
+	LastUpdateTime       int64        `json:"lastUpdateTime"`
+	LastUpdateTimeShamsi string       `json:"lastUpdateTimeShamsi"`
+	LegalAuthority       string       `json:"legalAuthority"`
+	NationalCode         string       `json:"nationalcode"`
+	NotifyToCoreTime     string       `json:"notifyToCoreTime"`
+	PhoneNumber          string       `json:"phoneNumber"`
+	Status               string       `json:"status"`
+	TryCount             int          `json:"tryCount"`
+}
+
 type UserInfoConverted struct {
 	EmailVerified              bool   `json:"emailVerified"`
 	FamilyName                 string `json:"familyName"`
