@@ -452,12 +452,12 @@ func (cfg *Config) MakeRequestForChangeUserInfo(requestBody types.ChangeUserInfo
 }
 
 // request for geting list of user info
-func (cfg *Config) MakeRequestForListOfUsersInfo(requestBody types.UserListRequestBody) (interface{}, error) {
+func (cfg *Config) MakeRequestForListOfUsersInfo(requestBody types.UserListRequestBody) (types.ListOfUsersInfo, error) {
 
 	// validate the body with certain validation set to the struct
 	validate := validator.New()
 	if err := validate.Struct(requestBody); err != nil {
-		return types.UserListRequestBody{}, errors.NewCustomError(
+		return types.ListOfUsersInfo{}, errors.NewCustomError(
 			map[string]interface{}{
 				"error":            errors.ErrInvalidInput,
 				"errorDescription": "invalid input",
@@ -467,7 +467,7 @@ func (cfg *Config) MakeRequestForListOfUsersInfo(requestBody types.UserListReque
 
 	// generating url data for the request to pod
 	if len(requestBody.Identity) == 0 || len(requestBody.IdentityType) == 0 || len(requestBody.Identity) != len(requestBody.IdentityType) {
-		return types.UserListRequestBody{}, errors.NewCustomError(
+		return types.ListOfUsersInfo{}, errors.NewCustomError(
 			map[string]interface{}{
 				"error":            errors.ErrInvalidInput,
 				"errorDescription": "invalid input",
@@ -496,7 +496,7 @@ func (cfg *Config) MakeRequestForListOfUsersInfo(requestBody types.UserListReque
 	var response types.ListOfUsersInfo
 	err := pkg.MakeRequestWithNoBody(requestUrl, "GET", headers, &response)
 	if err != nil {
-		return types.ValidationResponseFromPod{}, err
+		return types.ListOfUsersInfo{}, err
 	}
 	return response, nil
 }
