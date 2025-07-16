@@ -76,10 +76,10 @@ func MakeRequestWithUrlData(url string, method string, urlData url.Values, heade
 	return nil
 }
 
-func MakeRequestWithNoBody(url string, method string, headers map[string]string, responseBody interface{}) (interface{}, error) {
+func MakeRequestWithNoBody(url string, method string, headers map[string]string, responseBody interface{}) error {
 	req, err := http.NewRequest(method, url, nil)
 	if err != nil {
-		return nil, errors.NewCustomError(
+		return errors.NewCustomError(
 			map[string]interface{}{
 				"code": 503,
 				"message": map[string]string{
@@ -96,7 +96,7 @@ func MakeRequestWithNoBody(url string, method string, headers map[string]string,
 	client := &http.Client{}
 	res, err := client.Do(req)
 	if err != nil {
-		return nil, errors.NewCustomError(
+		return errors.NewCustomError(
 			map[string]interface{}{
 				"code":             503,
 				"error":            errors.ErrServiceUnavailable,
@@ -107,7 +107,7 @@ func MakeRequestWithNoBody(url string, method string, headers map[string]string,
 	defer res.Body.Close()
 	body, err := ioutil.ReadAll(res.Body)
 	if err != nil {
-		return nil, errors.NewCustomError(
+		return errors.NewCustomError(
 			map[string]interface{}{
 				"code":             500,
 				"error":            errors.ErrInternalServer,
@@ -118,7 +118,7 @@ func MakeRequestWithNoBody(url string, method string, headers map[string]string,
 
 	err = json.Unmarshal(body, responseBody)
 	if err != nil {
-		return nil, errors.NewCustomError(
+		return errors.NewCustomError(
 			map[string]interface{}{
 				"code":             500,
 				"error":            errors.ErrInternalServer,
@@ -138,7 +138,7 @@ func MakeRequestWithNoBody(url string, method string, headers map[string]string,
 			errorMap[k] = v
 		}
 
-		return nil, errors.NewCustomError(errorMap)
+		return errors.NewCustomError(errorMap)
 	}
-	return responseBody, nil
+	return nil
 }

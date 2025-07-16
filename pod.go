@@ -396,7 +396,7 @@ func (cfg *Config) MakeRequestForUserInfo(accessToken string) (types.UserInfoFro
 
 	// make the request
 	var res types.UserInfoFromPod
-	_, err := pkg.MakeRequestWithNoBody(requestUrl, "GET", headers, &res)
+	err := pkg.MakeRequestWithNoBody(requestUrl, "GET", headers, &res)
 	if err != nil {
 		return types.UserInfoFromPod{}, err
 	}
@@ -451,14 +451,13 @@ func (cfg *Config) MakeRequestForChangeUserInfo(requestBody types.ChangeUserInfo
 
 }
 
-// request for geting list of user
-// not completed , may contain bug
-func (cfg *Config) MakeRequestForListOfUsersInfo(requestBody types.UserListRequestBody) (interface{}, error) {
+// request for geting list of user info
+func (cfg *Config) MakeRequestForListOfUsersInfo(requestBody types.UserListRequestBody) (types.ListOfUsersInfo, error) {
 
 	// validate the body with certain validation set to the struct
 	validate := validator.New()
 	if err := validate.Struct(requestBody); err != nil {
-		return types.UserListRequestBody{}, errors.NewCustomError(
+		return types.ListOfUsersInfo{}, errors.NewCustomError(
 			map[string]interface{}{
 				"error":            errors.ErrInvalidInput,
 				"errorDescription": "invalid input",
@@ -467,9 +466,8 @@ func (cfg *Config) MakeRequestForListOfUsersInfo(requestBody types.UserListReque
 	}
 
 	// generating url data for the request to pod
-	urlDataForValidationOfToken, err := pkg.GetUrlDataFromGivenStruct(requestBody)
-	if err != nil {
-		return types.UserListRequestBody{}, errors.NewCustomError(
+	if len(requestBody.Identity) == 0 || len(requestBody.IdentityType) == 0 || len(requestBody.Identity) != len(requestBody.IdentityType) {
+		return types.ListOfUsersInfo{}, errors.NewCustomError(
 			map[string]interface{}{
 				"error":            errors.ErrInvalidInput,
 				"errorDescription": "invalid input",
@@ -487,13 +485,20 @@ func (cfg *Config) MakeRequestForListOfUsersInfo(requestBody types.UserListReque
 		"Authorization": authorizationHeader,
 	}
 
-	// make the request
-	var temp interface{}
-	err = pkg.MakeRequestWithUrlData(requestUrl, "GET", urlDataForValidationOfToken, headers, &temp)
-	if err != nil {
-		return types.ValidationResponseFromPod{}, err
+	for i := 0; i < len(requestBody.Identity); i++ {
+		if i == 0 {
+			requestUrl += "?"
+		}
+		requestUrl += "identityType=" + requestBody.IdentityType[i] + "&" + "identity=" + requestBody.Identity[i]
 	}
-	return temp, nil
+
+	// make the request
+	var response types.ListOfUsersInfo
+	err := pkg.MakeRequestWithNoBody(requestUrl, "GET", headers, &response)
+	if err != nil {
+		return types.ListOfUsersInfo{}, err
+	}
+	return response, nil
 }
 
 // handshake request for getting user private key
