@@ -235,6 +235,7 @@ type UserInfoFromPod struct {
 	Sub                        string `json:"sub"`
 	UpdatedAt                  int    `json:"updated_at"`
 	UpdatedAtShamsi            string `json:"updated_at_shamsi"`
+	BpiCustomerNumber          string `json:"bpiCustomerNumber"`
 }
 
 type ListOfUsersInfo struct {
