@@ -1,6 +1,7 @@
 package pkg
 
 import (
+	"crypto/tls"
 	"encoding/json"
 	"io/ioutil"
 	"net/http"
@@ -26,7 +27,12 @@ func MakeRequestWithUrlData(url string, method string, urlData url.Values, heade
 		req.Header.Add(key, value)
 	}
 
-	client := &http.Client{}
+	tr := &http.Transport{
+		TLSNextProto:       make(map[string]func(authority string, c *tls.Conn) http.RoundTripper),
+		DisableCompression: true,
+	}
+
+	client := &http.Client{Transport: tr}
 	res, err := client.Do(req)
 	if err != nil {
 		return errors.NewCustomError(

@@ -119,10 +119,10 @@ func (cfg *Config) SendOtpRequest(requestBody types.OTPRequestToPodRequestBody, 
 
 	// create the request base info's
 	requestUrl := pkg.GetRequestUrlForOtp(cfg.BaseUrl, phoneNumber)
-	authorizationHeader := fmt.Sprintf("Signature keyId=\"%s\",signature=\"%s\",headers=\"%s\"", keyId, signature, "host")
+	authorizationHeader := fmt.Sprintf("Signature keyId=%s,signature=%s,headers=%s", keyId, signature, "host")
 	headers := map[string]string{
 		"Content-Type":  constanse.ContentTypeForUrlDataPod,
-		"host":          pkg.GetHostFromURL(cfg.BaseUrl),
+		"Host":          pkg.GetHostFromURL(cfg.BaseUrl),
 		"Authorization": authorizationHeader,
 	}
 
