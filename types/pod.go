@@ -273,6 +273,7 @@ type ListOfUsersInfoItem struct {
 	Sub                         string         `json:"sub"`
 	UpdatedAt                   int64          `json:"updated_at"`
 	UpdatedAtShamsi             string         `json:"updated_at_shamsi"`
+	BpiCustomerNumber           string         `json:"bpiCustomerNumber"`
 }
 
 type LegalInquire struct {
