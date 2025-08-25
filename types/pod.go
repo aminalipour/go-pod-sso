@@ -184,7 +184,8 @@ type AccessTokenResponseClient struct {
 }
 
 type AccessTokenProcess struct {
-	AccessToken string `json:"access_token" validate:"required"`
+	Token         string `url:"token" validate:"required"`
+	TokenTypeHint string `url:"token_type_hint" validate:"required"`
 }
 
 type CallerClient struct {
@@ -212,6 +213,9 @@ type ValidationResponseFromPod struct {
 	Scope                  string       `json:"scope"`
 	ShamsiExpDate          string       `json:"shamsi_exp_date"`
 	Sub                    string       `json:"sub"`
+	ActionType             string       `json:"actionType"`
+	IssueType              string       `json:"issueType"`
+	ClientName             string       `json:"clientName"`
 	CallerClient           CallerClient `json:"callerClient"`
 }
 
