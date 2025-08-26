@@ -240,3 +240,31 @@ func TestMakeRequestForListOfUsersInfo(t *testing.T) {
 	}
 	mockPkg.AssertExpectations(t)
 }
+func TestMakeRequestForTokenValidation(t *testing.T) {
+	mockPkg := new(MockPkg)
+
+	requestBody := types.AccessTokenProcess{
+		Token:         "",
+		TokenTypeHint: "",
+	}
+	response, err := cfg.MakeRequestForTokenValidation(requestBody)
+	if err != nil {
+		t.Fatalf("expected no error, got %v", err)
+	}
+
+	val := reflect.ValueOf(response)
+	typ := reflect.TypeOf(response)
+
+	for i := 0; i < val.NumField(); i++ {
+		field := typ.Field(i)
+		value := val.Field(i).Interface()
+		fmt.Printf("%s: %v\n", field.Name, value)
+	}
+
+	if reflect.DeepEqual(response, types.UserInfoFromPod{}) {
+		t.Fatalf("expected valid response, got %v", response)
+	}
+
+	fmt.Println(response)
+	mockPkg.AssertExpectations(t)
+}

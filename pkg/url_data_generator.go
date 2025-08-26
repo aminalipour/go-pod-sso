@@ -63,8 +63,8 @@ func GetUrlDataForHandShakeRequest(requestBody types.HandShakeApiAdditionalDataF
 func GetUrlDataForTokenValidationRequest(requestBody types.AccessTokenProcess) url.Values {
 	urlDataForValidationOfToken := url.Values{}
 
-	urlDataForValidationOfToken.Set("token", requestBody.AccessToken)
-	urlDataForValidationOfToken.Set("token_type_hint", "access_token")
+	urlDataForValidationOfToken.Set("token", requestBody.Token)
+	urlDataForValidationOfToken.Set("token_type_hint", requestBody.TokenTypeHint)
 
 	return urlDataForValidationOfToken
 }
